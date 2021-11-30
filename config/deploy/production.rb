@@ -61,6 +61,6 @@
 #   }
 set :stage, :production
 set :rails_env, :production
-set :deploy_to, "deploy/apps/test_rails_app"
+set :deploy_to, "/deploy/apps/test_rails_app"
 set :branch, :config_deploy
 server "18.140.246.249", user: "haiky", roles: %w(web app db)

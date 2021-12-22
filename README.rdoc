@@ -27,23 +27,6 @@ http {
  }
 }          
 
-sudo mkdir /deploy
-sudo mkdir /deploy/apps
-sudo mkdir /deploy/apps/test_rails_app
-sudo chown -R haiky:root /deploy/apps/test_rails_app
-sudo mkdir /deploy/apps/test_rails_app/shared
-sudo mkdir /deploy/apps/test_rails_app/shared/config
-
-sudo vim /deploy/apps/test_rails_app/shared/config/database.yml
-production:
-  adapter: sqlite3
-  encoding: utf8mb4
-  pool: 5
-  database: test_rails_app
-  username: root
-  password: password
-  socket: /var/run/mysqld/mysqld.sock
-
 sudo vim /deploy/apps/test_rails_app/shared/config/application.yml
 SECRET_KEY_BASE: "9fcaebb1c2b2c0f7db60b59403753e5267eb9ed9e4158db55193491431e83bd533032bec2f7bfb62b53c99e535c590dfcc499ded3776182e2315923d5cfe2679"
 
@@ -55,3 +38,37 @@ puma -C config/puma/development.rb config.ru
 pumactl restart
 sudo tail -f /var/log/nginx/access.log
 sudo tail -f /var/log/nginx/error.log
+
+###
+    6  sudo kill -9 $(sudo lsof -t -i:3000)
+   36  nohup rails s -b 127.0.0.1 &
+   43  sudo service nginx start
+   44  sudo service nginx status
+   45  sudo vim /etc/nginx/nginx.conf 
+  109  cd
+  110  cd /var/log
+  113  mkdir puma
+  114  sudo mkdir puma
+  116  chown haiky /var/log/puma
+  117  sudo chown haiky /var/log/puma
+  118  cd
+  155  pumactl status
+  156  pumactl start
+  165  sudo tail -f /var/log/nginx/access.log
+  166  sudo tail -f /var/log/nginx/error.log
+  195  journalctl -xe
+  196  journalctl -xe -q
+  197  sudo journalctl -xe -q
+  198  sudo service nginx start
+  199  sudo journalctl -xe -q
+  201  sudo lsof -i:80
+  202  sudo fuser -k 80/tcp
+  203  sudo service nginx start
+  204  sudo journalctl -xe -q
+  205  nginx -t -c /etc/nginx/nginx.conf
+  230  sudo chown -R www-data:www-data *
+  309  sudo chmod 777 log/
+  310  puma -C config/puma/development.rb config.ru
+  311  history
+  315  git pull
+  316  pumactl start

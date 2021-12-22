@@ -46,3 +46,12 @@ production:
 
 sudo vim /deploy/apps/test_rails_app/shared/config/application.yml
 SECRET_KEY_BASE: "9fcaebb1c2b2c0f7db60b59403753e5267eb9ed9e4158db55193491431e83bd533032bec2f7bfb62b53c99e535c590dfcc499ded3776182e2315923d5cfe2679"
+
+https://github.com/kigster/puma-daemon
+https://gist.github.com/jtadeulopes/7271019
+
+###
+puma -C config/puma/development.rb config.ru
+pumactl restart
+sudo tail -f /var/log/nginx/access.log
+sudo tail -f /var/log/nginx/error.log

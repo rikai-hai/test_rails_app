@@ -3,7 +3,9 @@ threads_count = Integer(ENV['RAILS_MAX_THREADS'] || 5)
 threads threads_count, threads_count
 
 preload_app!
-
+bind  "unix:///var/tmp/test_rails_app.sock"
+pidfile "/var/run/puma/test_rails_app.pid"
+stdout_redirect "/deploy/apps/test_rails_app/repo/test_rails_app/log/test_rails_app.log"
 rackup      DefaultRackup
 port        ENV['PORT']     || 3000
 environment ENV['RACK_ENV'] || 'development'

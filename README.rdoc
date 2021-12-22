@@ -1,28 +1,48 @@
-== README
+events {
+    worker_connections 768;
+}
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+http {
+  upstream puma {
+    server unix:///var/tmp/test_rails_app.sock;
+  }
 
-Things you may want to cover:
+  server {
+   listen 80 default_server;
+   server_name localhost;
+   root /deploy/apps/test_rails_app/repo/test_rails_app/public/;
 
-* Ruby version
+   try_files $uri @puma;
+   location @puma {
+     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+     proxy_set_header X-Real-IP $remote_addr;
+     proxy_set_header Host $http_host;
+     proxy_redirect off;
+     proxy_pass http://puma;
+     autoindex on;
+     autoindex_exact_size on;
+   }
 
-* System dependencies
+   keepalive_timeout 10;
+ }
+}          
 
-* Configuration
+sudo mkdir /deploy
+sudo mkdir /deploy/apps
+sudo mkdir /deploy/apps/test_rails_app
+sudo chown -R haiky:root /deploy/apps/test_rails_app
+sudo mkdir /deploy/apps/test_rails_app/shared
+sudo mkdir /deploy/apps/test_rails_app/shared/config
 
-* Database creation
+sudo vim /deploy/apps/test_rails_app/shared/config/database.yml
+production:
+  adapter: sqlite3
+  encoding: utf8mb4
+  pool: 5
+  database: test_rails_app
+  username: root
+  password: password
+  socket: /var/run/mysqld/mysqld.sock
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+sudo vim /deploy/apps/test_rails_app/shared/config/application.yml
+SECRET_KEY_BASE: "9fcaebb1c2b2c0f7db60b59403753e5267eb9ed9e4158db55193491431e83bd533032bec2f7bfb62b53c99e535c590dfcc499ded3776182e2315923d5cfe2679"

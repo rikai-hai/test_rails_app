@@ -26,6 +26,7 @@ gem 'puma',  '~> 5'
 gem 'puma-daemon', require: false
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+gem "activerecord-import"
 
 # Use Unicorn as the app server
 # gem 'unicorn'
